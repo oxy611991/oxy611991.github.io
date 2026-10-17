@@ -108,6 +108,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f6f2;color:#2d2d2
 .fb-link{display:inline-flex;align-items:center;gap:6px;background:#1877f2;color:#fff;text-decoration:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:700;margin-top:16px}
 .fb-link:hover{background:#1565c0}
 
+/* SHARE BAR */
+.share-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 16px;padding:14px 0;border-top:1px solid #ebe8e3}
+.share-label{font-size:12.5px;color:#aaa;margin-right:4px}
+.share-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;border:none;transition:.15s;font-family:inherit}
+.share-fb{background:#1877f2;color:#fff}.share-fb:hover{background:#1565c0}
+.share-copy{background:#f0ede8;color:#555}.share-copy:hover{background:#e0dbd3;color:#333}
+.share-native{background:#3b7a57;color:#fff}.share-native:hover{background:#2d5e42}
+
 /* FOOTER */
 footer{text-align:center;padding:28px 20px;background:#fff;border-top:1px solid #e8e4dd;font-size:12.5px;color:#aaa;margin-top:20px}
 footer a{color:#888;text-decoration:none}
@@ -873,6 +881,34 @@ function toggleCat(id){
 function togglePost(id){
   var el=document.getElementById(id);
   el.classList.toggle('popen');
+  if(el.classList.contains('popen')){
+    var ac=el.querySelector('.article-content');
+    if(ac&&!ac.querySelector('.share-bar')){
+      var title=el.querySelector('.post-title')?el.querySelector('.post-title').textContent.trim():'';
+      var url='https://oxy611991.github.io/#'+id;
+      var bar=document.createElement('div');
+      bar.className='share-bar';
+      var native=navigator.share?'<button class="share-btn share-native" onclick="nativeShare(this)">📤 Chia sẻ</button>':'';
+      bar.innerHTML='<span class="share-label">Chia sẻ bài này:</span>'
+        +'<a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url)+'&quote='+encodeURIComponent(title.substring(0,200))+'" target="_blank" rel="noopener">📘 Facebook</a>'
+        +'<button class="share-btn share-copy" onclick="copyLink(\''+url+'\',this)">🔗 Copy link</button>'
+        +native;
+      bar.dataset.url=url;
+      bar.dataset.title=title;
+      var cbox=ac.querySelector('.comment-box');
+      if(cbox)ac.insertBefore(bar,cbox);else ac.appendChild(bar);
+    }
+  }
+}
+function copyLink(url,btn){
+  navigator.clipboard.writeText(url).then(function(){
+    var o=btn.textContent;btn.textContent='✅ Đã copy!';
+    setTimeout(function(){btn.textContent=o;},2200);
+  }).catch(function(){prompt('Copy link này:',url);});
+}
+function nativeShare(btn){
+  var bar=btn.closest('.share-bar');
+  navigator.share({title:bar.dataset.title,url:bar.dataset.url}).catch(function(){});
 }
 
 var _cat='all',_sub='all';
@@ -1045,7 +1081,11 @@ function submitComment(e, form) {
 
 <script>
 document.addEventListener('contextmenu',e=>e.preventDefault());
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['u','s','a'].includes(e.key.toLowerCase()))e.preventDefault()});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault()});
+document.addEventListener('selectstart',e=>e.preventDefault());
+document.addEventListener('copy',e=>e.preventDefault());
+document.body.style.userSelect='none';
+document.body.style.webkitUserSelect='none';
 </script>
 </body>
 </html>
