@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8"><!-- Google tag (gtag.js) -->
+<meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-407RW2WKZX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -9,6 +10,7 @@
   gtag('js', new Date());
   gtag('config', 'G-407RW2WKZX');
 </script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tự học Shopee Affiliate - Chia sẻ kinh nghiệm thực tế từ A đến Z</title>
 <meta name="author" content="oxy_yourbreath">
@@ -1623,7 +1625,11 @@ function filterCat(cat) {
 
 <script>
 document.addEventListener('contextmenu',e=>e.preventDefault());
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['u','s','a'].includes(e.key.toLowerCase()))e.preventDefault()});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault()});
+document.addEventListener('selectstart',e=>e.preventDefault());
+document.addEventListener('copy',e=>e.preventDefault());
+document.body.style.userSelect='none';
+document.body.style.webkitUserSelect='none';
 </script>
 
 </body>
